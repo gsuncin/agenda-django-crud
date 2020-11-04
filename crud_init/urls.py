@@ -15,14 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from crud_init import urls as crud_urls
-from django.conf import settings    # visualizar img
-from django.conf.urls.static import static    # visualizar img
+from .views import home
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include(crud_urls))
+    path('', home, name='home'),
 ]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

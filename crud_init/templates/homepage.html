@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <main role="main">
+
+        <section class="jumbotron text-center">
+            <div class="container">
+                <h1>Agenda de Contatos</h1>
+                <p class="lead text-muted">{{ header_title }}</p>
+                <p>
+                    <a href="#" class="btn btn-primary my-2">Novo Contato</a>
+                </p>
+            </div>
+        </section>
+
+        <div class="album py-5 bg-light">
+            <div class="container">
+
+                <div class="row">
+                    {% for person in persons %}
+                        <div class="col-md-4">
+                            <div class="card mb-4 shadow-sm">
+                                <div class="l-box" style="width: 100%; height: 225px">
+                                    {% if person.photo %}
+                                        <img src="{{ person.photo.url }}" width="100%" height="225">
+                                    {% else %}
+                                        <img class="img-fluid" src="{% static 'person.png' %}" style='height:225px; margin-left: auto; margin-right: auto'>
+                                    {% endif %}
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">Nome: {{ person.name }} {{ person.surname }}</p>
+                                    <p class="card-text">Apelido: {{ person.formal_name }}</p>
+                                    <p class="card-text">Telefone: {{ person.main_phone }}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                        </div>
+                                        <small class="text-muted">9 mins</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <form method="post" action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">New Person</button>
+{% endblock %}
