@@ -8,7 +8,13 @@
                 <h1>Agenda de Contatos</h1>
                 <p class="lead text-muted">{{ header_title }}</p>
                 <p>
-                    <a href="#" class="btn btn-primary my-2">Novo Contato</a>
+                    <a href="{% url 'add_contact' %}" class="btn btn-primary my-2">
+                        Novo Contato <svg width="1em" height="1em" viewBox="0 0 16 16"
+                             class="bi bi-person-fill" fill="currentColor"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                  d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                        </svg></a>
                 </p>
             </div>
         </section>
@@ -20,23 +26,38 @@
                     {% for person in persons %}
                         <div class="col-md-4">
                             <div class="card mb-4 shadow-sm">
-                                <div class="l-box" style="width: 100%; height: 225px">
+                                <div class="image-person" style="width: 100%; height: 225px">
                                     {% if person.photo %}
                                         <img src="{{ person.photo.url }}" width="100%" height="225">
                                     {% else %}
-                                        <img class="img-fluid" src="{% static 'person.png' %}" style='height:225px; margin-left: auto; margin-right: auto'>
+                                        <img class="image-person" src="{% static 'person.png' %}">
                                     {% endif %}
                                 </div>
                                 <div class="card-body">
-                                    <p class="card-text">Nome: {{ person.name }} {{ person.surname }}</p>
-                                    <p class="card-text">Apelido: {{ person.formal_name }}</p>
-                                    <p class="card-text">Telefone: {{ person.main_phone }}</p>
+                                    <p class="card-text"><strong>Nome:</strong> {{ person.name }} {{ person.surname }}</p>
+                                    <p class="card-text"><strong>Telefone:</strong> {{ person.main_phone }}</p>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                            <button type="button" class="btn btn-sm btn-info">Editar
+                                                <svg width="1em" height="1em" viewBox="0 0 16 16"
+                                                     class="bi bi-person-lines-fill" fill="currentColor"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd"
+                                                          d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm7 1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm2 9a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/>
+                                                </svg>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-danger">
+                                                Deletar
+                                                <svg width="1em" height="1em" viewBox="0 0 16 16"
+                                                     class="bi bi-person-dash-fill" fill="currentColor"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd"
+                                                          d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm5-.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z"/>
+                                                </svg>
+                                            </button>
                                         </div>
-                                        <small class="text-muted">9 mins</small>
+                                        <small class="text-muted added">Adicionado
+                                            em: {{ person.created_at|date:'d/m/Y' }}</small>
                                     </div>
                                 </div>
                             </div>
@@ -47,8 +68,4 @@
         </div>
     </main>
 
-    <form method="post" action="">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">New Person</button>
 {% endblock %}

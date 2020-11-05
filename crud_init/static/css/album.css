@@ -31,3 +31,23 @@ footer {
 footer p {
   margin-bottom: .25rem;
 }
+
+.image-person {
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 225px;
+  width: auto;
+  max-width: 345px;
+  background-color: #F6F6F6;
+}
+
+.added{
+  position: absolute;
+  text-align: end;
+  font-size: 0.7rem;
+  bottom: 6px;
+  right: 10px;
+}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+    <main role="main">
+        <section class="jumbotron text-center">
+            <div class="container">
+                <h1>Agenda de Contatos</h1>
+                <p class="lead text-muted">{{ header_title }}</p>
+
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+{#                    <input type="file" name="photo"/>#}
+                    <button class="btn btn-info" type="submit">Novo Contato</button>
+
+                </form>
+            </div>
+        </section>
+    </main>
+{% endblock %}
