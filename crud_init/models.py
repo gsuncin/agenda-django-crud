@@ -16,7 +16,7 @@ class Person(models.Model):
         return self.name
 
     def formal_name(self):
-        return f'{self.name} {self.surname[0]}'
+        return f'{self.name} {self.surname.split()[0]}'
 
     def person_age(self):
         return datetime.now().date() - self.birth_date

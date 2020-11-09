@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import home, add_contact
+from .views import home, add_contact, modal_delete
 
 urlpatterns = [
     path('', home, name='home'),
     path('add_contact/', add_contact, name='add_contact'),
+    path('modal_delete/', modal_delete, name='modal_delete'),
 ]

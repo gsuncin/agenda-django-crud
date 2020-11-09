@@ -8,13 +8,9 @@
                 <h1>Agenda de Contatos</h1>
                 <p class="lead text-muted">{{ header_title }}</p>
                 <p>
-                    <a href="{% url 'add_contact' %}" class="btn btn-primary my-2">
-                        Novo Contato <svg width="1em" height="1em" viewBox="0 0 16 16"
-                             class="bi bi-person-fill" fill="currentColor"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                  d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                        </svg></a>
+                    <a href="#" class="card-link" data-toggle="modal" data-target="#addModal">
+                        <button class="btn btn-primary my-2">Novo Contato <i class="fas fa-user-plus"></i></button>
+                    </a>
                 </p>
             </div>
         </section>
@@ -34,26 +30,19 @@
                                     {% endif %}
                                 </div>
                                 <div class="card-body">
-                                    <p class="card-text"><strong>Nome:</strong> {{ person.name }} {{ person.surname }}</p>
+                                    <p class="card-text"><strong>Nome:</strong> {{ person.name }} {{ person.surname }}
+                                    </p>
                                     <p class="card-text"><strong>Telefone:</strong> {{ person.main_phone }}</p>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-info">Editar
-                                                <svg width="1em" height="1em" viewBox="0 0 16 16"
-                                                     class="bi bi-person-lines-fill" fill="currentColor"
-                                                     xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd"
-                                                          d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm7 1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm2 9a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/>
-                                                </svg>
+                                            <button class="btn btn-sm btn-info" data-toggle="modal"
+                                                    data-target="#editModal">Editar
+                                                <i class="fas fa-user-edit"></i>
                                             </button>
-                                            <button type="button" class="btn btn-sm btn-danger">
+                                            <button class="btn btn-sm btn-danger" data-toggle="modal"
+                                                    data-target="#deleteModal">
                                                 Deletar
-                                                <svg width="1em" height="1em" viewBox="0 0 16 16"
-                                                     class="bi bi-person-dash-fill" fill="currentColor"
-                                                     xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd"
-                                                          d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm5-.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z"/>
-                                                </svg>
+                                                <i class="fas fa-user-times"></i>
                                             </button>
                                         </div>
                                         <small class="text-muted added">Adicionado
@@ -67,5 +56,75 @@
             </div>
         </div>
     </main>
+    <!-- Modals -->
 
+    <!-- Modal Add -->
+    <div class="modal fade center" id="addModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Adicione um novo contato</h3>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>x</span>
+                    </button>
+                </div>
+                <form method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-info">Adicione o Contato</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit -->
+    <div class="modal fade center" id="editModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Edite o contato {{ person.name }}</h3>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>x</span>
+                    </button>
+                </div>
+                <form method="post">
+                    <div class="modal-body">
+
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-info">Adicione o Contato</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Delete -->
+    <div class="modal fade center" id="deleteModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Confirmação da exclusão</h3>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>x</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja deletar esse contato? </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info">Não</button>
+                    <button type="button" class="btn btn-danger">Sim</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
