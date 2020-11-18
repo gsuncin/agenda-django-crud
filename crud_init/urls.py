@@ -20,5 +20,5 @@ from .views import home, add_contact, modal_delete
 urlpatterns = [
     path('', home, name='home'),
     path('add_contact/', add_contact, name='add_contact'),
-    path('modal_delete/', modal_delete, name='modal_delete'),
+    path('modal_delete/<int:id>', modal_delete, name='modal_delete'),
 ]

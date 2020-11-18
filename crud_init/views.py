@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.core.files.storage import FileSystemStorage
 from .models import Agenda, Person
 from .forms import PersonForm
@@ -22,20 +22,12 @@ def home(request):
 
 
 def add_contact(request):
-    form = PersonForm()
+    form = PersonForm(request.POST or None, request.FILES or None, instance=Person)
     context = {
         'page_title': 'Novo contato',
         'header_title': 'Aumente sua rede e conheça novas pessoas',
         'form': form,
     }
-    # if request.POST and request.FILES['photo']:
-    #     form = PersonForm(request.POST and request.FILES)
-    #     photo = request.FILES['photo']
-    #     fs = FileSystemStorage()
-    #     fs.save(photo.name, photo)
-    #     form.save()
-    #     context['message'] = 'Adicionado com sucesso'
-    #     return redirect(reverse('home'))
     if request.POST:
         form = PersonForm(request.POST)
         form.save()
@@ -44,5 +36,14 @@ def add_contact(request):
     return render(request, 'add_contact.html', context)
 
 
-def modal_delete(request):
-    return render(request, 'modal_delete.html')
+def modal_delete(request, id):
+    person = get_object_or_404(Person, pk=id)
+    form = PersonForm(request.POST or None, request.FILES or None, instance=Person)
+    context = {
+        'page_title': 'Deletar contato',
+        'form': form,
+    }
+    if request.POST:
+        person.delete()
+        return redirect('home')
+    return render(request, 'modal_delete.html', context)

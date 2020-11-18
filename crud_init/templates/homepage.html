@@ -39,11 +39,13 @@
                                                     data-target="#editModal">Editar
                                                 <i class="fas fa-user-edit"></i>
                                             </button>
-                                            <button class="btn btn-sm btn-danger" data-toggle="modal"
-                                                    data-target="#deleteModal">
-                                                Deletar
-                                                <i class="fas fa-user-times"></i>
-                                            </button>
+                                            <a href="#">
+                                                <button class="btn btn-sm btn-danger" data-toggle="modal"
+                                                        data-target="#deleteModal">
+                                                    Deletar
+                                                    <i class="fas fa-user-times"></i>
+                                                </button>
+                                            </a>
                                         </div>
                                         <small class="text-muted added">Adicionado
                                             em: {{ person.created_at|date:'d/m/Y' }}</small>
