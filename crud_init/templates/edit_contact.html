@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
+{% load static %}
 {% block content %}
     <main role="main">
         <section class="jumbotron">
-            <div class="container  text-center">
-                <h1>Agenda de Contatos</h1>
-                <p class="lead text-muted">{{ header_title }}</p>
-            </div>
+        <div class="container text-center">
+            <h3><span>Editando contato: <strong>{{ person.name | title }}</strong></span></h3>
+            <h6 class="text-muted">Altere e exclua contatos da sua agenda</h6>
+        </div>
             <div class="container mt-lg-5">
                 <div class="col-md-12">
                     <form method="post">
@@ -36,21 +37,25 @@
                                 <label class="mt-2 label-control" for="{{ form.photo.id_for_label }}"></label>
                                 {{ form.photo }}
                             </div>
+                        <div class="col-md-6 mb-4" style="text-align: end">
+                                {% if person.photo %}
+                                    <img src="{{ person.photo.url }}" width="70%" height="100%">
+                                {% else %}
+                                    <img class="image-person" src="{% static 'person.png' %}"
+                                         style="width: 50%; height: 90%">
+                                {% endif %}
                         </div>
-                        <div class="row mt-4" style="position: absolute; right: 2em">
-                            <button class="btn btn-info" type="submit">Adicionar contato</button>
-                        </div>
+                            </div>
+                            <div class="row mt-4" style="position: absolute; right: 2em">
+
+                                <button class="btn btn-info" type="submit">Salvar contato</button>
+                                <a href="{% url 'delete_contact' person.id %}">
+                                    <button class="btn btn-danger" type="button">Deletar contato</button>
+                                </a>
+                            </div>
                     </form>
                 </div>
             </div>
         </section>
     </main>
-{% endblock %}
-{% block javascript %}
-    <script>
-
-        $(function () {
-            $("#birth_date").datepicker()
-        })
-    </script>
 {% endblock %}

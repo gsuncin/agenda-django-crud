@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load widget_tweaks %}
 {% block content %}
     <main role="main">
 
@@ -20,7 +21,7 @@
 
                 <div class="row">
                     {% for person in persons %}
-                        <div class="col-md-4">
+                        <div class="col-md-4" id="personData" param="{{ person.id }}">
                             <div class="card mb-4 shadow-sm">
                                 <div class="image-person" style="width: 100%; height: 225px">
                                     {% if person.photo %}
@@ -35,13 +36,15 @@
                                     <p class="card-text"><strong>Telefone:</strong> {{ person.main_phone }}</p>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="btn-group">
-                                            <button class="btn btn-sm btn-info" data-toggle="modal"
-                                                    data-target="#editModal">Editar
-                                                <i class="fas fa-user-edit"></i>
-                                            </button>
-                                            <a href="#">
-                                                <button class="btn btn-sm btn-danger" data-toggle="modal"
-                                                        data-target="#deleteModal">
+                                            <a href="{% url 'edit_contact' person.id %}">
+                                                <button class="btn btn-sm btn-info">Editar
+                                                    <i class="fas fa-user-edit"></i>
+                                                </button>
+                                            </a>
+                                            <a href="">
+                                                <button id="deleteModalButton" class="btn btn-sm btn-danger"
+                                                        data-toggle="modal" data-target="#deleteModal"
+                                                        param="{{ person.id }}">
                                                     Deletar
                                                     <i class="fas fa-user-times"></i>
                                                 </button>
@@ -74,8 +77,39 @@
                     <div class="modal-body">
                         <div class="form-group">
                             {% csrf_token %}
-                            {{ form.as_p }}
+                            <div class="col-md-12">
+                                <div class="row mt-lg-3">
+                                    <div class="col-md-6 mb-4">
+                                        <label for="{{ form.name.id_for_label }}">Nome</label>
+                                        {{ form.name | add_class:"form-control" }}
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <label for="{{ form.surname.id_for_label }}">Sobrenome:</label>
+                                        {{ form.surname | add_class:"form-control" }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <label for="{{ form.birth_date.id_for_label }}">Data de nascimento:</label>
+                                        {{ form.birth_date |  add_class:"form-control" }}
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <label for="{{ form.main_phone.id_for_label }}">Telefone de Contato</label>
+                                        {{ form.main_phone | add_class:"form-control" }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <label class="mt-2 label-control" for="{{ form.photo.id_for_label }}">
+                                            Adicione uma foto para este contato:</label>
+                                        {{ form.photo }}
+                                    </div>
+                                </div>
+                                <div class="row mt-4" style="position: absolute; right: 2em">
+                                </div>
+                            </div>
                         </div>
+
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-info">Adicione o Contato</button>
@@ -130,3 +164,10 @@
         </div>
     </div>
 {% endblock %}
+{% block javascript %}
+    <script>
+        function open_edit_modal(url){
+            $('edit')
+        }
+    </script>
+{% endblock javascript %}
