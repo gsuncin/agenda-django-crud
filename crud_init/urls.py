@@ -15,12 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import home, add_contact, edit_contact, delete_contact
+from .views import home, add_contact, edit_contact, delete_contact, modal_delete
 
 urlpatterns = [
     path('', home, name='home'),
     path('add_contact/', add_contact, name='add_contact'),
     path('edit_contact/<int:id>', edit_contact, name='edit_contact'),
+    path('modal_delete/<int:id>', modal_delete, name='modal_delete'),
     path('delete_contact/<int:id>', delete_contact, name='delete_contact'),
     # path('modal_delete/<int:id>', modal_delete, name='modal_delete'),
 ]

@@ -36,19 +36,13 @@
                                     <p class="card-text"><strong>Telefone:</strong> {{ person.main_phone }}</p>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="btn-group">
-                                            <a href="{% url 'edit_contact' person.id %}">
-                                                <button class="btn btn-sm btn-info">Editar
-                                                    <i class="fas fa-user-edit"></i>
-                                                </button>
-                                            </a>
-                                            <a href="">
-                                                <button id="deleteModalButton" class="btn btn-sm btn-danger"
-                                                        data-toggle="modal" data-target="#deleteModal"
-                                                        param="{{ person.id }}">
-                                                    Deletar
-                                                    <i class="fas fa-user-times"></i>
-                                                </button>
-                                            </a>
+                                            <button onclick="open_edit_modal('{% url 'edit_contact' person.id %}')"
+                                                    class="btn btn-sm btn-info">Editar<i class="fas fa-user-edit"></i>
+                                            </button>
+                                            <button onclick="open_delete_modal('{% url 'modal_delete' person.id %}')"
+                                                    class="btn btn-sm btn-danger">Deletar
+                                                <i class="fas fa-user-times"></i>
+                                            </button>
                                         </div>
                                         <small class="text-muted added">Adicionado
                                             em: {{ person.created_at|date:'d/m/Y' }}</small>
@@ -119,55 +113,26 @@
         </div>
     </div>
 
-    <!-- Modal Edit -->
-    <div class="modal fade center" id="editModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Edite o contato {{ person.name }}</h3>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>x</span>
-                    </button>
-                </div>
-                <form method="post">
-                    <div class="modal-body">
-
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-info">Adicione o Contato</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+    <div class="modal fade center" id="edit_contact" tabindex="-1" role="dialog">
     </div>
 
     <!-- Modal Delete -->
-    <div class="modal fade center" id="deleteModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Confirmação da exclusão</h3>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>x</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Tem certeza que deseja deletar esse contato? </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info">Não</button>
-                    <button type="button" class="btn btn-danger">Sim</button>
-                </div>
-            </div>
-        </div>
+    <div class="modal fade center" id="modal_delete" tabindex="-1" role="dialog">
     </div>
 {% endblock %}
 {% block javascript %}
-    <script>
-        function open_edit_modal(url){
-            $('edit')
+    <script type="text/javascript">
+
+        function open_edit_modal(url) {
+            $('#edit_contact').focus().load(url, function () {
+                $(this).modal('show');
+            })
+        }
+
+        function open_delete_modal(url) {
+            var modal = $('#modal_delete').load(url, function () {
+                $(this).modal('show');
+            })
         }
     </script>
 {% endblock javascript %}

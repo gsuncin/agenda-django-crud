@@ -1,17 +1,18 @@
-{% extends 'base.html' %}
 {% load widget_tweaks %}
 {% load static %}
-{% block content %}
-    <main role="main">
-        <section class="jumbotron">
-        <div class="container text-center">
-            <h3><span>Editando contato: <strong>{{ person.name | title }}</strong></span></h3>
-            <h6 class="text-muted">Altere e exclua contatos da sua agenda</h6>
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Edite o contato: {{ person.name }}</h3>
+            <button type="button" class="close" data-dismiss="modal">
+                <span>x</span>
+            </button>
         </div>
-            <div class="container mt-lg-5">
-                <div class="col-md-12">
-                    <form method="post">
-                        {% csrf_token %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="modal-body">
+                <div class="container mt-lg-4">
+                    <div class="col-md-12">
                         <div class="row mt-lg-3">
                             <div class="col-md-6 mb-4">
                                 <label for="{{ form.name.id_for_label }}">Nome</label>
@@ -37,25 +38,28 @@
                                 <label class="mt-2 label-control" for="{{ form.photo.id_for_label }}"></label>
                                 {{ form.photo }}
                             </div>
-                        <div class="col-md-6 mb-4" style="text-align: end">
+                            <div class="col-md-6 mb-4" style="text-align: end">
                                 {% if person.photo %}
                                     <img src="{{ person.photo.url }}" width="70%" height="100%">
                                 {% else %}
                                     <img class="image-person" src="{% static 'person.png' %}"
                                          style="width: 50%; height: 90%">
                                 {% endif %}
+                            </div>
                         </div>
-                            </div>
-                            <div class="row mt-4" style="position: absolute; right: 2em">
-
-                                <button class="btn btn-info" type="submit">Salvar contato</button>
-                                <a href="{% url 'delete_contact' person.id %}">
-                                    <button class="btn btn-danger" type="button">Deletar contato</button>
-                                </a>
-                            </div>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </section>
-    </main>
-{% endblock %}
+            <div class="modal-footer mb-5">
+                <div class="row mt-5" style="position: absolute; right: 2em">
+
+                    <button class="btn btn-info mr-2" type="submit">Salvar contato</button>
+                    <a href="{% url 'delete_contact' person.id %}">
+                        <button class="btn btn-danger" type="button">Deletar contato</button>
+                    </a>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

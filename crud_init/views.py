@@ -52,7 +52,15 @@ def edit_contact(request, id):
     return render(request, 'edit_contact.html', context)
 
 
+def modal_delete(request, id):
+    person = get_object_or_404(Person, pk=id)
+    context = {
+        'person': person,
+    }
+    return render(request, 'modal_delete.html', context)
+
+
 def delete_contact(request, id):
     person = get_object_or_404(Person, pk=id)
     person.delete()
-    return redirect('home')
+    return redirect(reverse('home'))
