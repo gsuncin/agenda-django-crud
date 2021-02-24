@@ -4,19 +4,20 @@
 {% block content %}
     <main role="main">
 
-        <section class="jumbotron text-center">
+        <div class="jumbotron text-center ">
             <div class="container">
                 <h1>Agenda de Contatos</h1>
                 <p class="lead text-muted">{{ header_title }}</p>
                 <p>
                     <a href="#" class="card-link" data-toggle="modal" data-target="#addModal">
-                        <button class="btn btn-primary my-2">Novo Contato <i class="fas fa-user-plus"></i></button>
+                        <button onclick="open_add_modal('{% url 'modal_add_contact' %}')"
+                                class="btn btn-primary my-2">Novo Contato <i class="fas fa-user-plus"></i></button>
                     </a>
                 </p>
             </div>
-        </section>
+        </div>
 
-        <div class="album py-5 bg-light">
+        <div class="album py-5 bg-light shadow">
             <div class="container">
 
                 <div class="row">
@@ -25,7 +26,7 @@
                             <div class="card mb-4 shadow-sm">
                                 <div class="image-person" style="width: 100%; height: 225px">
                                     {% if person.photo %}
-                                        <img src="{{ person.photo.url }}" width="100%" height="225">
+                                        <img src="{{ person.photo.url }}" class="custom-image">
                                     {% else %}
                                         <img class="image-person" src="{% static 'person.png' %}">
                                     {% endif %}
@@ -36,7 +37,7 @@
                                     <p class="card-text"><strong>Telefone:</strong> {{ person.main_phone }}</p>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="btn-group">
-                                            <button onclick="open_edit_modal('{% url 'edit_contact' person.id %}')"
+                                            <button onclick="open_edit_modal('{% url 'modal_edit_contact' person.id %}')"
                                                     class="btn btn-sm btn-info">Editar<i class="fas fa-user-edit"></i>
                                             </button>
                                             <button onclick="open_delete_modal('{% url 'modal_delete' person.id %}')"
@@ -45,7 +46,7 @@
                                             </button>
                                         </div>
                                         <small class="text-muted added">Adicionado
-                                            em: {{ person.created_at|date:'d/m/Y' }}</small>
+                                            em: <span><i class="fa fa-clock"></i> </span> {{ person.created_at|date:'d/m/Y' }}</small>
                                     </div>
                                 </div>
                             </div>
@@ -56,72 +57,17 @@
         </div>
     </main>
     <!-- Modals -->
-
-    <!-- Modal Add -->
-    <div class="modal fade center" id="addModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Adicione um novo contato</h3>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>x</span>
-                    </button>
-                </div>
-                <form method="post">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            {% csrf_token %}
-                            <div class="col-md-12">
-                                <div class="row mt-lg-3">
-                                    <div class="col-md-6 mb-4">
-                                        <label for="{{ form.name.id_for_label }}">Nome</label>
-                                        {{ form.name | add_class:"form-control" }}
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label for="{{ form.surname.id_for_label }}">Sobrenome:</label>
-                                        {{ form.surname | add_class:"form-control" }}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 mb-4">
-                                        <label for="{{ form.birth_date.id_for_label }}">Data de nascimento:</label>
-                                        {{ form.birth_date |  add_class:"form-control" }}
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label for="{{ form.main_phone.id_for_label }}">Telefone de Contato</label>
-                                        {{ form.main_phone | add_class:"form-control" }}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 mb-4">
-                                        <label class="mt-2 label-control" for="{{ form.photo.id_for_label }}">
-                                            Adicione uma foto para este contato:</label>
-                                        {{ form.photo }}
-                                    </div>
-                                </div>
-                                <div class="row mt-4" style="position: absolute; right: 2em">
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-info">Adicione o Contato</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade center" id="edit_contact" tabindex="-1" role="dialog">
-    </div>
-
-    <!-- Modal Delete -->
-    <div class="modal fade center" id="modal_delete" tabindex="-1" role="dialog">
-    </div>
+    <div class="modal fade center" id="add_contact" tabindex="-1" role="dialog"></div>
+    <div class="modal fade center" id="edit_contact" tabindex="-1" role="dialog"></div>
+    <div class="modal fade center" id="modal_delete" tabindex="-1" role="dialog"></div>
 {% endblock %}
 {% block javascript %}
     <script type="text/javascript">
+        function open_add_modal(url) {
+            $('#add_contact').focus().load(url, function () {
+                $(this).modal('show');
+            })
+        }
 
         function open_edit_modal(url) {
             $('#edit_contact').focus().load(url, function () {
@@ -134,5 +80,18 @@
                 $(this).modal('show');
             })
         }
+
+        $(function () {
+            $("#datepicker").datepicker({
+                format: 'dd/mm/yyyy',
+            });
+            $(document).ready(function () {
+                $('#telefone').mask('(99) 99999-9999')
+            });
+            $(document).ready(function () {
+                $('#datepicker').mask('99/99/9999')
+            });
+
+        });
     </script>
 {% endblock javascript %}

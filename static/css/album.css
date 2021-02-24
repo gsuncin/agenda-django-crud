@@ -74,3 +74,10 @@ footer p {
     top: 50%;
     transform: translate(-50%, -50%);
 }
+
+.custom-image {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 225px;
+}

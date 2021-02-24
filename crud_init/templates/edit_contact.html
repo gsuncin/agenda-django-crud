@@ -8,7 +8,7 @@
                 <span>x</span>
             </button>
         </div>
-        <form method="post">
+        <form method="post" enctype="multipart/form-data" action="{% url 'edit_contact' person.id %}">
             {% csrf_token %}
             <div class="modal-body">
                 <div class="container mt-lg-4">
@@ -26,11 +26,11 @@
                         <div class="row">
                             <div class="col-md-6 mb-4">
                                 <label for="{{ form.birth_date.id_for_label }}">Data de nascimento:</label>
-                                {{ form.birth_date |  add_class:"form-control" }}
+                                {% render_field form.birth_date type="text" class="form-control" id="datepicker" %}
                             </div>
                             <div class="col-md-6 mb-4">
                                 <label for="{{ form.main_phone.id_for_label }}">Telefone de Contato</label>
-                                {{ form.main_phone | add_class:"form-control" }}
+                                {% render_field form.main_phone type="text" class="form-control" id="telefone" %}
                             </div>
                         </div>
                         <div class="row">
@@ -52,7 +52,6 @@
             </div>
             <div class="modal-footer mb-5">
                 <div class="row mt-5" style="position: absolute; right: 2em">
-
                     <button class="btn btn-info mr-2" type="submit">Salvar contato</button>
                     <a href="{% url 'delete_contact' person.id %}">
                         <button class="btn btn-danger" type="button">Deletar contato</button>
@@ -63,3 +62,19 @@
         </form>
     </div>
 </div>
+{% block javascript %}
+    <script>
+        $(function () {
+            $("#datepicker").datepicker({
+                format: 'dd/mm/yyyy',
+            });
+            $(document).ready(function () {
+                $('#telefone').mask('(99) 99999-9999')
+            });
+            $(document).ready(function () {
+                $('#datepicker').mask('99/99/9999')
+            });
+
+        });
+    </script>
+{% endblock %}

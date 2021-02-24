@@ -14,7 +14,3 @@ class PersonForm(forms.ModelForm):
             widget=forms.DateInput(format='%d/%m/%Y'),
             input_formats=('%d/%m/%Y',),
         )
-
-        '''widgets = {
-            'birth_date': DateInput,
-        }'''

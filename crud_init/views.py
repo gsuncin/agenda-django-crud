@@ -1,10 +1,8 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
-from django.core.files.storage import FileSystemStorage
-from .models import Agenda, Person
+from .models import Person
 from .forms import PersonForm
 
 
-# Create your views here.
 def home(request):
     form = PersonForm()
     context = {
@@ -13,27 +11,36 @@ def home(request):
         'persons': Person.objects.all(),
         'form': form,
     }
-    if request.POST:
-        form = PersonForm(request.POST)
-        form.save()
-        context['message'] = 'Adicionado com sucesso'
-        return redirect(reverse('home'))
     return render(request, 'homepage.html', context)
 
 
-def add_contact(request):
+def modal_add_contact(request):
     form = PersonForm(request.POST or None, request.FILES or None)
     context = {
         'page_title': 'Novo contato',
         'header_title': 'Aumente sua rede e conheça novas pessoas',
         'form': form,
     }
-    if request.POST:
-        form = PersonForm(request.POST)
-        form.save()
-        context['message'] = 'Adicionado com sucesso'
-        return redirect(reverse('home'))
     return render(request, 'add_contact.html', context)
+
+
+def add_contact(request):
+    form = PersonForm(request.POST, request.FILES)
+    if form.is_valid():
+        form.save()
+        return redirect(reverse('home'))
+
+
+def modal_edit_contact(request, id):
+    person = get_object_or_404(Person, pk=id)
+    form = PersonForm(request.POST or None, request.FILES or None, instance=person)
+    context = {
+        'person': Person.objects.get(id=id),
+        'page_title': 'Edite o contato',
+        'header_title': 'Aumente sua rede e conheça novas pessoas',
+        'form': form,
+    }
+    return render(request, 'edit_contact.html', context)
 
 
 def edit_contact(request, id):
